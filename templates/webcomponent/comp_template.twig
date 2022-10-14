@@ -1,0 +1,33 @@
+<?php
+/**
+ * CakePHP элемент "{{ name }}" для генерации одноимённого веб-компонента.
+ *
+ * Описание. Предназначение.
+ *
+ * Используйте <?= $this->Webcomp->{{ nameWebComp }}() ?>
+ *
+ * Настройки веб-компонента:
+ *  view =>
+ *      'black' - чёрный вид;
+ *      'red'   - сделайте красный вид.
+ */
+?>
+
+<?php $this->start('wc-{{ name }}') ?>
+    <?php // Содержимое веб-компонента. ?>
+<?php $this->end() ?>
+
+<?php echo
+    $this->Html->script('components/{{ name }}/{{ name }}', [
+        'block' => 'js-{{ name }}',
+        'type' => 'module',
+    ]);
+?>
+
+<brunov-{{ name }}<?= $this->Webcomp->addattr( $attr[0] ) ?>>
+    <template class="{{ name }}">
+        <?= $attr[0]['content'] ?? '' ?>
+        <?= $this->Webcomp->filterScript( $this->fetch('wc-{{ name }}'), $attr[0]['js'] ) ?>
+    </template>
+    <?= $this->fetch('js-{{ name }}') ?>
+</brunov-{{ name }}>

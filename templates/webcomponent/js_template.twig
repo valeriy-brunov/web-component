@@ -1,0 +1,122 @@
+/**
+ * Веб-компонент "{{ name }}".
+ */
+
+import Template from './template.js';
+
+/**
+ * Класс {{ nameClass }}
+ */
+export default class {{ nameClass }} extends HTMLElement {
+
+    /**
+     * Конструктор.
+     */
+    constructor() {
+
+        super();
+
+        // Теневая модель:
+        this.root = this.attachShadow( {mode: 'open'} );
+
+        // Подключаем CSS:
+        this.root.innerHTML = Template.render();
+
+        // Выбираем одно из действий:
+        // Копируем с шаблона содержимое:
+        this.cloneContent();
+        // иначе все содержимое переносим в теневую модель, оставляя тег <template> пустым:
+        this.moveContent();
+
+        // Подключаем кеширование:
+        this.dom = Template.mapDom( this.root );
+        this.cashe = this.casheValue();
+    }
+
+    /**
+     * Клонируем с шаблона содержимое.
+     */
+    cloneContent() {
+        const template = this.querySelector( '.{{ name }}' );
+        const clone = template.content.cloneNode( true );
+        this.root.appendChild( clone );
+    }
+
+    /**
+     * Все содержимое переносим в теневую модель, оставляя тег <template> пустым.
+     */
+    moveContent() {
+        const template = this.querySelector( '.{{ name }}' );
+        const fragment = document.createDocumentFragment();
+        fragment.appendChild( template.content );
+        this.root.appendChild( fragment );
+    }
+
+    /**
+     * Кеширование значений или объектов.
+     */
+    casheValue() {
+        return {
+            valueFirstTel: 'Значение или объект',
+        }
+    }
+
+    /**
+     * Сеттеры и геттеры.
+     */
+    set hex( val ) {
+        this.setAttribute( 'hex', val );
+    }
+
+    get hex() {
+        if ( this.getAttribute( 'hex' ) ) {
+            return this.getAttribute( 'hex' );
+        }
+        else return {{ nameClass }}.DEFAULT_HEX;
+    }
+
+    /**
+     * Значения по умолчанию.
+     */
+    static get DEFAULT_HEX() {
+        return '#45AD23';
+    }
+
+    /**
+     * Определяем, за какими атрибутами необходимо наблюдать.
+     */
+    static get observedAttributes() {
+        //return ['Имя атрибута'];
+    }
+
+    /**
+     * Следим за изменениями этих атрибутов и отвечаем соответственно.
+     */
+    attributeChangedCallback( name, oldVal, newVal ) {
+        switch( name ) {
+            case 'Имя атрибута':
+                // Выполняемый код.
+                break;
+            case 'Имя атрибута':
+            // Выполняемый код.
+            break;
+        }
+    }
+
+    /**
+     * Браузер вызывает этот метод при добавлении элемента в документ.
+     * (может вызываться много раз, если элемент многократно добавляется/удаляется).
+     */
+    connectedCallback() {
+        // СОБЫТИЯ:
+        // this.dom.valera.addEventListener('click', (e) => console.log(e.currentTarget));// Для примера.
+    }
+}
+
+/**
+ * Регистрация веб-компонента.
+ */
+if ( !customElements.get( 'brunov-{{ name }}' ) ) {
+    customElements.define( 'brunov-{{ name }}', {{ nameClass }} );
+}
+
