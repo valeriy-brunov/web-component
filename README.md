@@ -13,6 +13,7 @@
 ```
 composer require valeriy-brunov/web-component
 composer dumpautoload
+bin/cake plugin load WebComponent
 ```
 
 ### Настройка

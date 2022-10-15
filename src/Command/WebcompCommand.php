@@ -65,19 +65,19 @@ class WebcompCommand extends Command
             $io->abort('В название имени веб-компонента указан недопустимый символ "_" (подчёркивание).');
         }
 
-        $pathTempl = ROOT . DS . 'plugins' . DS . "WebComponent/templates/webcomponent/js_template.twig";
+        $pathTempl = ROOT . DS . 'vendor' . DS . 'valeriy-brunov' . DS . 'web-component' . DS . 'templates' . DS . 'webcomponent' . DS . 'js_template.twig';
         $io->createFile(
             "./webroot/js/components/{$name}/{$name}.js",
             $this->contentTemplateFile( $pathTempl, $name ),
         );
 
-        $pathTempl = ROOT . DS . 'plugins' . DS . "WebComponent/templates/webcomponent/comp_template.twig";
+        $pathTempl = ROOT . DS . 'vendor' . DS . 'valeriy-brunov' . DS . 'web-component' . DS . 'templates' . DS . 'webcomponent' . DS . 'comp_template.twig';
         $io->createFile(
             "./templates/element/components/{$name}.php",
             $this->contentTemplateFile( $pathTempl, $name ),
         );
 
-        $pathTempl = ROOT . DS . 'plugins' . DS . "WebComponent/templates/webcomponent/template_template.twig";
+        $pathTempl = ROOT . DS . 'vendor' . DS . 'valeriy-brunov' . DS . 'web-component' . DS . 'templates' . DS . 'webcomponent' . DS . 'template_template.twig';
         $io->createFile(
             "./webroot/js/components/{$name}/template.js",
             $this->contentTemplateFile( $pathTempl, $name ),
