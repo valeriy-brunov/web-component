@@ -59,7 +59,8 @@ class WebcompCommand extends Command
      */
     public function execute(Arguments $args, ConsoleIo $io): int
     {
-        $confApp = Configure::read('App');
+        $confApp    = Configure::read('App');
+        $pathPluginTemplate = Plugin::templatePath('webcomponent');
 
         $name = $args->getArgument('name');
         $name = mb_strtolower($name);
@@ -70,27 +71,27 @@ class WebcompCommand extends Command
         $pathElement = $confApp['paths']['templates'][0] . 'element' . DS . 'components' . DS;
         $pathJs = ROOT . DS . $confApp['webroot'] . DS . $confApp['jsBaseUrl'] . 'components' . DS . $name . DS;
 
-        $pathTempl = ROOT . DS . 'vendor' . DS . 'valeriy-brunov' . DS . 'web-component' . DS . 'templates' . DS . 'webcomponent' . DS . 'js_template.twig';
+        $pathTempl = $pathPluginTemplate . 'webcomponent' . DS . 'js_template.twig';
         $io->createFile(
             $pathJs . "{$name}.js",
             $this->contentTemplateFile( $pathTempl, $name ),
         );
 
-        $pathTempl = ROOT . DS . 'vendor' . DS . 'valeriy-brunov' . DS . 'web-component' . DS . 'templates' . DS . 'webcomponent' . DS . 'comp_template.twig';
+        $pathTempl = $pathPluginTemplate . 'webcomponent' . DS . 'comp_template.twig';
         $io->createFile(
             $pathElement . "{$name}.php",
             $this->contentTemplateFile( $pathTempl, $name ),
         );
 
-        $pathTempl = ROOT . DS . 'vendor' . DS . 'valeriy-brunov' . DS . 'web-component' . DS . 'templates' . DS . 'webcomponent' . DS . 'template_template.twig';
+        $pathTempl = $pathPluginTemplate . 'webcomponent' . DS . 'template_template.twig';
         $io->createFile(
             $pathJs . "template.js",
             $this->contentTemplateFile( $pathTempl, $name ),
         );
 
-        $io->out('');
-        $io->out("Создан веб-компонент {$name}.");
-        $io->out('');
+        $io->hr();
+        $io->success("Создан веб-компонент {$name}.");
+        $io->hr();
 
         return static::CODE_SUCCESS;
     }
