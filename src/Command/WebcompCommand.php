@@ -89,8 +89,11 @@ class WebcompCommand extends Command
             $this->contentTemplateFile( $pathTempl, $name ),
         );
 
+        $io->setStyle('greentext', ['text' => 'green']);
+        $io->setStyle('boldik', ['text' => 'green', 'bold' => true]);
+
         $io->hr();
-        $io->success("Создан веб-компонент {$name}.");
+        $io->out("<greentext>Создан веб-компонент </greentext><boldik>{$name}</boldik>");
         $io->hr();
 
         return static::CODE_SUCCESS;
