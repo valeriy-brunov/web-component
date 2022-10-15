@@ -59,27 +59,32 @@ class WebcompCommand extends Command
      */
     public function execute(Arguments $args, ConsoleIo $io): int
     {
+        $confApp = Configure::read('App');
+
         $name = $args->getArgument('name');
         $name = mb_strtolower($name);
         if ( preg_match( '/\_/', $name ) ) {
             $io->abort('В название имени веб-компонента указан недопустимый символ "_" (подчёркивание).');
         }
 
+        $pathElement = $confApp['paths']['templates'][0] . 'element' . DS . 'components' . DS;
+        $pathJs = ROOT . DS . $confApp['webroot'] . DS . $confApp['jsBaseUrl'] . 'components' . DS . $name . DS;
+
         $pathTempl = ROOT . DS . 'vendor' . DS . 'valeriy-brunov' . DS . 'web-component' . DS . 'templates' . DS . 'webcomponent' . DS . 'js_template.twig';
         $io->createFile(
-            "./webroot/js/components/{$name}/{$name}.js",
+            $pathJs . "{$name}.js",
             $this->contentTemplateFile( $pathTempl, $name ),
         );
 
         $pathTempl = ROOT . DS . 'vendor' . DS . 'valeriy-brunov' . DS . 'web-component' . DS . 'templates' . DS . 'webcomponent' . DS . 'comp_template.twig';
         $io->createFile(
-            "./templates/element/components/{$name}.php",
+            $pathElement . "{$name}.php",
             $this->contentTemplateFile( $pathTempl, $name ),
         );
 
         $pathTempl = ROOT . DS . 'vendor' . DS . 'valeriy-brunov' . DS . 'web-component' . DS . 'templates' . DS . 'webcomponent' . DS . 'template_template.twig';
         $io->createFile(
-            "./webroot/js/components/{$name}/template.js",
+            $pathJs . "template.js",
             $this->contentTemplateFile( $pathTempl, $name ),
         );
 
@@ -110,14 +115,15 @@ class WebcompCommand extends Command
                 $arr[$i] = ucwords($arr[$i]);
             }
         }
-        $nameClass = implode('', $arr);
 
+        $nameClass = implode('', $arr);
         $nameWebComp = lcfirst($nameClass);
 
         $content = str_replace([
             '{{ name }}',
             '{{ nameClass }}',
-            '{{ nameWebComp }}'], [
+            '{{ nameWebComp }}',
+        ],[
             $name,
             $nameClass,
             $nameWebComp,
