@@ -10,6 +10,7 @@ use Cake\Console\ConsoleOptionParser;
 use Cake\Filesystem\File;
 use Cake\Core\Configure;
 use Cake\Core\Configure\Engine\PhpConfig;
+use Cake\Core\Plugin;
 
 /**
  * Webcomp command.
@@ -42,6 +43,12 @@ class WebcompCommand extends Command
             ],
         ]);
 
+        $parser->addOption('plugin', [
+            'help' => 'Создает из имеющегося веб-компонента плагин.',
+            'short' => 'p',
+            'boolean' => true,
+        ]);
+
         $parser->addArgument('name', [
             'help' => 'Имя веб-компонента. Может содержать знак "-" (тире).',
             'required' => true,
@@ -59,35 +66,52 @@ class WebcompCommand extends Command
      */
     public function execute(Arguments $args, ConsoleIo $io): int
     {
-        $confApp    = Configure::read('App');
-        $pathPluginTemplate = Plugin::templatePath('webcomponent');
-
         $name = $args->getArgument('name');
         $name = mb_strtolower($name);
         if ( preg_match( '/\_/', $name ) ) {
             $io->abort('В название имени веб-компонента указан недопустимый символ "_" (подчёркивание).');
         }
 
-        $pathElement = $confApp['paths']['templates'][0] . 'element' . DS . 'components' . DS;
-        $pathJs = ROOT . DS . $confApp['webroot'] . DS . $confApp['jsBaseUrl'] . 'components' . DS . $name . DS;
+        $confApp = Configure::read('App');
+        $pathPluginTemplate = Plugin::templatePath('webcomponent');
 
-        $pathTempl = $pathPluginTemplate . 'webcomponent' . DS . 'js_template.twig';
-        $io->createFile(
-            $pathJs . "{$name}.js",
-            $this->contentTemplateFile( $pathTempl, $name ),
-        );
+        if ($args->getOption('plugin')) {
+            $dirPlugin = ucfirst($name);
+            $pathElement = $confApp['paths']['plugins'][0] . $dirPlugin . DS . 'templates' . DS . 'element' . DS . 'components' . DS;
+            $pathJs = $confApp['paths']['plugins'][0] . $dirPlugin . DS . $confApp['webroot'] . DS . $confApp['jsBaseUrl'] . 'components' . DS . $name . DS;
+            $this->_execNewComp($name, $pathElement, $pathJs, $pathPluginTemplate, $io);
+        }
+        else {
+            $pathElement = $confApp['paths']['templates'][0] . 'element' . DS . 'components' . DS;
+            $pathJs = ROOT . DS . $confApp['webroot'] . DS . $confApp['jsBaseUrl'] . 'components' . DS . $name . DS;
+            $this->_execNewComp($name, $pathElement, $pathJs, $pathPluginTemplate, $io);
+        }
 
-        $pathTempl = $pathPluginTemplate . 'webcomponent' . DS . 'comp_template.twig';
-        $io->createFile(
-            $pathElement . "{$name}.php",
-            $this->contentTemplateFile( $pathTempl, $name ),
-        );
+        return static::CODE_SUCCESS;
+    }
 
-        $pathTempl = $pathPluginTemplate . 'webcomponent' . DS . 'template_template.twig';
-        $io->createFile(
-            $pathJs . "template.js",
-            $this->contentTemplateFile( $pathTempl, $name ),
-        );
+    /**
+     * Создаёт новый веб-компонент.
+     * 
+     */
+    protected function _execNewComp($name, $pathElement, $pathJs, $pathPluginTemplate, $io): void
+    {
+        $templ = [
+            'js_template.twig',
+            'template_template.twig',
+            'comp_template.twig',
+        ];
+        $file = [
+            "{$name}.js",
+            "template.js",
+            "{$name}.php",
+        ];
+        for ($i = 0; $i < count($templ); $i++) {
+            $io->createFile(
+                $i == 2 ? $pathElement . $file[$i] : $pathJs . $file[$i],
+                $this->_contentTemplateFile( $pathPluginTemplate . 'webcomponent' . DS . $templ[$i], $name ),
+            );
+        }
 
         $io->setStyle('greentext', ['text' => 'green']);
         $io->setStyle('boldik', ['text' => 'green', 'bold' => true]);
@@ -95,8 +119,6 @@ class WebcompCommand extends Command
         $io->hr();
         $io->out("<greentext>Создан веб-компонент </greentext><boldik>{$name}</boldik>");
         $io->hr();
-
-        return static::CODE_SUCCESS;
     }
 
     /**
@@ -107,7 +129,7 @@ class WebcompCommand extends Command
      * @param {string} $name Имя веб-компонента.
      * @return string Шаблон загруженного файла в виде строки.
      */
-    private function contentTemplateFile( $pathTempl, $name ): string
+    protected function _contentTemplateFile( $pathTempl, $name ): string
     {
         $file = new File( $pathTempl );
         $content = $file->read();
@@ -119,14 +141,14 @@ class WebcompCommand extends Command
                 $arr[$i] = ucwords($arr[$i]);
             }
         }
-
         $nameClass = implode('', $arr);
+
         $nameWebComp = lcfirst($nameClass);
 
         $content = str_replace([
             '{{ name }}',
             '{{ nameClass }}',
-            '{{ nameWebComp }}',
+            '{{ nameWebComp }}'
         ],[
             $name,
             $nameClass,
