@@ -92,7 +92,12 @@ class WebcompCommand extends Command
 
     /**
      * Создаёт новый веб-компонент.
-     * 
+     *
+     * @param {string} $name Имя веб-компонента.
+     * @param {string} $pathElement Путь до директории, где должен располагаться файл элемента веб-компонента.
+     * @param {string} $pathJs Путь до директории, где должны располагаться js-файлы веб-компонента.
+     * @param {string} $pathPluginTemplate Месторасположение файлов плагина.
+     * @param \Cake\Console\ConsoleIo $io Консольный ввод-вывод.
      */
     protected function _execNewComp($name, $pathElement, $pathJs, $pathPluginTemplate, $io): void
     {
@@ -127,7 +132,7 @@ class WebcompCommand extends Command
      * 
      * @param {string} $pathTempl Путь до загружаемого файла.
      * @param {string} $name Имя веб-компонента.
-     * @return string Шаблон загруженного файла в виде строки.
+     * @return string Шаблон загруженного файла в виде строки с подставленными значениями.
      */
     protected function _contentTemplateFile( $pathTempl, $name ): string
     {

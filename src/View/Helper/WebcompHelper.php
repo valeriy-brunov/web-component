@@ -5,6 +5,8 @@ namespace WebComponent\View\Helper;
 
 use Cake\View\Helper;
 use Cake\View\View;
+use Cake\Core\Configure;
+use Cake\Core\Configure\Engine\PhpConfig;
 
 /**
  * Webcomp helper
@@ -45,7 +47,24 @@ class WebcompHelper extends Helper
 
         $name = strtolower( preg_replace('/([A-Z]{1})/', '-$1', $name ) );
 
-        return $this->getView()->element( '/components/' . $name, ['attr' => $arr] );
+        $confApp = Configure::read('App');
+        $namePlugin = ucfirst($name);
+        $pathElement = $confApp['paths']['plugins'][0] . $namePlugin . DS . 'templates' . DS . 'element' . DS . 'components' . DS;
+
+        if ( file_exists($pathElement . $name . '.php') ) {
+            return $this->getView()->element(
+                $namePlugin . './components/' . $name, [
+                'attr' => $arr,
+                'namePlugin' => $namePlugin,
+            ]);
+        }
+        else {
+            return $this->getView()->element(
+                '/components/' . $name, [
+                'attr' => $arr,
+                'namePlugin' => false,
+            ]);
+        }
     }
 
     /**
