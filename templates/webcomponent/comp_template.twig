@@ -18,8 +18,8 @@
 <?php $this->end() ?>
 
 <?php echo
-    $this->Html->script(($namePlugin ? $namePlugin . '.' : '') . 'components/{{ name }}/{{ name }}', [
-        'block' => 'js-{{ name }}',
+    $this->Html->script(($namePlugin ? $pathPluginJs : 'components/field-telephone/field-telephone'), [
+        'block' => 'js-field-telephone',
         'type' => 'module',
     ]);
 ?>

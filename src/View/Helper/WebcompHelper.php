@@ -56,6 +56,7 @@ class WebcompHelper extends Helper
                 $namePlugin . './components/' . $name, [
                 'attr' => $arr,
                 'namePlugin' => $namePlugin,
+                'pathPluginJs' => DS . $namePlugin . DS . 'js' . DS . 'components' . DS . $name . DS . "{$name}.js",
             ]);
         }
         else {
