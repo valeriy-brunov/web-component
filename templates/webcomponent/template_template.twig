@@ -10,9 +10,18 @@ export default {
     /**
      * Кэширование элементов компонента для теневой модели.
      */
+    mapDomShadow( scope ) {
+        return {
+            //myDiv: scope.querySelector('.ffff'),
+        }
+    },
+
+    /**
+     * Кеширование элементов компонента не входящих в теневую модель.
+     */
     mapDom( scope ) {
         return {
-            oneDiv: scope.querySelector('.ddt'),// Для примера.
+            tagTempl: scope.querySelector('.field-simbol-template'),// Тег <template>.
         }
     },
 

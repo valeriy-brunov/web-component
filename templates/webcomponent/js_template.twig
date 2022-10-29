@@ -21,6 +21,9 @@ export default class {{ nameClass }} extends HTMLElement {
 
         // Подключаем CSS:
         this.root.innerHTML = Template.render();
+        
+        // Кеширование элементов компонента не входящих в теневую модель:
+        this.dom = Template.mapDom( this );
 
         // Выбираем одно из действий:
         // Копируем с шаблона содержимое:
@@ -28,16 +31,18 @@ export default class {{ nameClass }} extends HTMLElement {
         // иначе все содержимое переносим в теневую модель, оставляя тег <template> пустым:
         this.moveContent();
 
-        // Подключаем кеширование:
-        this.dom = Template.mapDom( this.root );
-        this.cashe = this.casheValue();
+        // Кэширование элементов компонента для теневой модели.
+        this.domShadow = Template.mapDomShadow( this.root );
+
+        // Кешируем значения.
+        // this.cashe = this.casheValue();
     }
 
     /**
      * Клонируем с шаблона содержимое.
      */
     cloneContent() {
-        const template = this.querySelector( '.{{ name }}' );
+        const template = this.dom.tagTempl;
         const clone = template.content.cloneNode( true );
         this.root.appendChild( clone );
     }
@@ -46,7 +51,7 @@ export default class {{ nameClass }} extends HTMLElement {
      * Все содержимое переносим в теневую модель, оставляя тег <template> пустым.
      */
     moveContent() {
-        const template = this.querySelector( '.{{ name }}' );
+        const template = this.dom.tagTempl;
         const fragment = document.createDocumentFragment();
         fragment.appendChild( template.content );
         this.root.appendChild( fragment );
@@ -57,7 +62,7 @@ export default class {{ nameClass }} extends HTMLElement {
      */
     casheValue() {
         return {
-            valueFirstTel: 'Значение или объект',
+            //myVal: 'Значение или объект',
         }
     }
 
