@@ -86,9 +86,8 @@ class WebcompHelper extends Helper
         // Если массив не пуст.
         if ( !empty($arr) ) {
             foreach ( $arr as $key => $val ) {
-                $str[] = $key . '=' . $val;
+                $str[] = $key . '="' . $val . '"';
             }
-
             if ( count($str) == 1 ) {
                 return ' ' . $str[0];
             }

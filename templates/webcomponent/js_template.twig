@@ -72,23 +72,20 @@ export default class {{ nameClass }} extends HTMLElement {
     set hex( val ) {
         this.setAttribute( 'hex', val );
     }
-
     get hex() {
-        if ( this.getAttribute( 'hex' ) ) {
+        if ( this.hasAttribute( 'hex' ) ) {
             return this.getAttribute( 'hex' );
         }
         else return {{ nameClass }}.DEFAULT_HEX;
     }
-
-    /**
-     * Значения по умолчанию.
-     */
     static get DEFAULT_HEX() {
         return '#45AD23';
     }
 
     /**
      * Определяем, за какими атрибутами необходимо наблюдать.
+     *
+     * @return array Массив атрибутов.
      */
     static get observedAttributes() {
         //return ['Имя атрибута'];
@@ -96,6 +93,15 @@ export default class {{ nameClass }} extends HTMLElement {
 
     /**
      * Следим за изменениями этих атрибутов и отвечаем соответственно.
+     *
+     * @param {string} name Имя атрибута, в котором произошли изменения.
+     * @param {string} oldVal Старое значение атрибута, т.е. до его изменения.
+     * @param {string} newVal Новое значение атрибута.
+     * @return void
+     *
+     * !!! При первой загрузке страницы, если атрибуты установлены в веб-компоненте, происходит
+     *     срабатывание данной функции, при этом "oldVal=null", а "newVal" будет равно значению,
+     *     установленному в веб-компоненте.
      */
     attributeChangedCallback( name, oldVal, newVal ) {
         switch( name ) {
