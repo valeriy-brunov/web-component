@@ -20,9 +20,9 @@
     <?php // Содержимое веб-компонента. ?>
 <?php $this->end() ?>
 
-<?php echo
+<?php
     $this->Html->script(($namePlugin ? $pathPluginJs : 'components/{{ name }}/{{ name }}'), [
-        'block' => 'js-field-telephone',
+        'block' => 'script',
         'type' => 'module',
     ]);
 ?>
@@ -32,5 +32,4 @@
         <?= $attr[0]['content'] ?? '' ?>
         <?= $this->Webcomp->filterScript( $this->fetch('wc-{{ name }}'), $attr[0]['js'] ) ?>
     </template>
-    <?= $this->fetch('js-{{ name }}') ?>
 </brunov-{{ name }}>
