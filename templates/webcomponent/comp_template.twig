@@ -4,9 +4,9 @@
  *
  * Описание. Предназначение.
  *
- * Используйте <?= $this->Webcomp->{{ nameWebComp }}() ?>
+ * Используйте <?= $this->Webcomp->{{ nameWebComp }}([Массив_настроек]) ?>
  *
- * Описание настроек веб-компонента:
+ * Описание всех настроек веб-компонента:
  *      https://github.com/valeriy-brunov/
  */
 ?>
@@ -25,6 +25,11 @@
         'block' => 'script',
         'type' => 'module',
     ]);
+?>
+
+<?php
+    // Удаляем значения массива, из которых не нужно создавать атрибуты.
+    if ( isset($attr[0]['contentTrubber']) or empty($attr[0]['contentTrubber']) ) unset($attr[0]['contentTrubber']);
 ?>
 
 <brunov-{{ name }}<?= $this->Webcomp->addattr( $attr[0] ) ?>>
