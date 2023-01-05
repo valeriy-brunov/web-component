@@ -38,6 +38,8 @@ class WebcompHelper extends Helper
             if ( !array_key_exists( 'js', $arr[0] ) ) {
                 // Устанавливаем значение по-умолчанию.
                 $arr[0]['js'] = false;
+            }
+            if ( !array_key_exists( 'jsajax', $arr[0] ) ) {
                 $arr[0]['jsajax'] = false;
             }
         }
