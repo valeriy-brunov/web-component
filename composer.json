@@ -1,6 +1,6 @@
 {
     "name": "valeriy-brunov/web-component",
-    "description": "WebComponent плагин для CakePHP",
+    "description": "При помощи этого плагина можно быстро создавать каркас для веб-компонента, используя командную строку. Без этого плагина невозможна работа веб-компонентов.",
     "type": "cakephp-plugin",
     "home": "https://github.com/valeriy-brunov/web-component",
     "license": "MIT",
