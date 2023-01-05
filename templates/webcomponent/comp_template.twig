@@ -28,7 +28,7 @@
 ?>
 
 <?php
-    if ( $this->request->is('ajax') ) {
+    if ( $this->request->is('ajax') and $attr[0]['jsajax'] ) {
         $attr[0]['jsload'] = str_replace(['<script src="', '" type="module"></script>'], ['', ''], $this->fetch('js-{{ name }}'));
     }
 ?>

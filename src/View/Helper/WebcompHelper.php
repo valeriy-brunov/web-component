@@ -38,11 +38,13 @@ class WebcompHelper extends Helper
             if ( !array_key_exists( 'js', $arr[0] ) ) {
                 // Устанавливаем значение по-умолчанию.
                 $arr[0]['js'] = false;
+                $arr[0]['jsajax'] = false;
             }
         }
         else {
             // Устанавливаем значение по-умолчанию.
             $arr[0]['js'] = false;
+            $arr[0]['jsajax'] = false;
         }
 
         $name = strtolower( preg_replace('/([A-Z]{1})/', '-$1', $name ) );
@@ -77,6 +79,10 @@ class WebcompHelper extends Helper
     {
         if ( array_key_exists( 'js', $arr ) ) {
             unset($arr['js']);
+        }
+
+        if ( array_key_exists( 'jsajax', $arr ) ) {
+            unset($arr['jsajax']);
         }
 
         if ( array_key_exists( 'content', $arr ) ) {
