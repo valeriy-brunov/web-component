@@ -22,7 +22,7 @@
 
 <?php
     $this->Html->script(($namePlugin ? $pathPluginJs : 'components/{{ name }}/{{ name }}'), [
-        'block' => ($this->request->is('ajax') ? 'js-{{ name }}' : 'script'),
+        'block' => ( ($this->request->is('ajax') and $attr[0]['jsajax']) ? 'js-{{ name }}' : 'script'),
         'type' => 'module',
     ]);
 ?>
